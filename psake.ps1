@@ -36,6 +36,10 @@ Task Test -Depends Init {
     # Gather test results. Store them in a variable and file
     $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
 
+    If ($ENV:BHBuildSystem -eq 'Teamcity') {
+        Write-Host "##teamcity[importData type='nunit' path='$ProjectRoot\$TestFile']"
+    }
+
     Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
 
     # Failed tests?
