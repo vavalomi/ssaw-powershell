@@ -40,8 +40,6 @@ Task Test -Depends Init {
         Write-Host "##teamcity[importData type='nunit' path='$ProjectRoot\$TestFile']"
     }
 
-    Remove-Item "$ProjectRoot\$TestFile" -Force -ErrorAction SilentlyContinue
-
     # Failed tests?
     # Need to tell psake or it will proceed to the deployment. Danger!
     if ($TestResults.FailedCount -gt 0) {
