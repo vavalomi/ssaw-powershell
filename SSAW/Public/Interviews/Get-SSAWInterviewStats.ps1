@@ -1,5 +1,4 @@
 function Get-SSAWInterviewStats {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseSingularNouns")]
     [cmdletbinding()]
     param(
         [parameter(Mandatory = $true)]
