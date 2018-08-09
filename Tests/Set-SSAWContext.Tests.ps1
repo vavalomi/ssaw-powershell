@@ -1,7 +1,5 @@
-$ModuleName = "SSAW"
-$ModulePath = "D:\projects\ssaw-powershell\SSAW"
-Remove-Module $ModuleName -Force -ErrorAction SilentlyContinue
-Import-Module -force $ModulePath
+Remove-Module $ENV:BHProjectName -Force -ErrorAction SilentlyContinue
+Import-Module $ENV:BHPSModulePath -Force
 
 InModuleScope $ModuleName {
     Describe Set-SSAWContext {
