@@ -41,7 +41,7 @@ Task Test -Depends Init {
     $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -CodeCoverage $sourcefiles -OutputFile "$ProjectRoot\$TestFile"
 
     If ($ENV:BHBuildSystem -eq 'Teamcity') {
-        Write-Host "##teamcity[importData type='nunit' path='$ProjectRoot\$TestFile']"
+        Write-Output "##teamcity[importData type='nunit' path='$ProjectRoot\$TestFile']"
         Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal' value='$($testResults.CodeCoverage.NumberOfCommandsAnalyzed)']"
         Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='$($testResults.CodeCoverage.NumberOfCommandsExecuted)']"
     }
