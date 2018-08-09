@@ -5,7 +5,8 @@ function Invoke-SSAWRequest {
         [String]$Resource,
         [String]$baseUrl,
         [PSCredential]$Cred,
-        [String]$Method = "GET"
+        [String]$Method = "GET",
+        [PSCustomObject]$Payload
     )
 
     if (-not $baseUrl) {
@@ -15,11 +16,15 @@ function Invoke-SSAWRequest {
         $Cred = $Script:scriptCred
     }
 
+    if (@("PATCH", "POST", "PUT").Contains($Method)) {
+        $query = Format-Payload $Payload
+    }
     $headers = @{
         "Content-Type" = 'application/json';
         "Accept" = 'application/json';
     }
 
-    $uri = $baseUrl + $Resource
-    Invoke-RestMethod -Method $Method -Uri $uri -Headers $headers -Credential $Cred
+    $uri = $baseUrl + $Resource + $query
+    write-host $uri
+    #Invoke-RestMethod -Method $Method -Uri $uri -Headers $headers -Credential $Cred
 }
