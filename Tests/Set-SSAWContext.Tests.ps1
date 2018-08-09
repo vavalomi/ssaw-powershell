@@ -1,7 +1,7 @@
 Remove-Module $ENV:BHProjectName -Force -ErrorAction SilentlyContinue
 Import-Module $ENV:BHPSModulePath -Force
 
-InModuleScope $ModuleName {
+InModuleScope $ENV:BHProjectName {
     Describe Set-SSAWContext {
         BeforeAll {
             $secstr = New-Object -TypeName System.Security.SecureString
