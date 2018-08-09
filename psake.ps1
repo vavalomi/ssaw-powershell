@@ -22,6 +22,7 @@ Properties {
 Task Default -Depends Deploy
 
 Task Init {
+    Remove-item $ProjectRoot\TestResults* -Force
     $lines
     Set-Location $ProjectRoot
     "Build System Details:"
@@ -33,11 +34,13 @@ Task Test -Depends Init {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
-    # Gather test results. Store them in a variable and file
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -OutputFile "$ProjectRoot\$TestFile"
+    $sourcefiles = (Get-ChildItem -Path $ENV:BHPSModulePath\*.ps1  -Recurse).FullName
+    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -CodeCoverage $sourcefiles -OutputFile "$ProjectRoot\$TestFile"
 
     If ($ENV:BHBuildSystem -eq 'Teamcity') {
         Write-Host "##teamcity[importData type='nunit' path='$ProjectRoot\$TestFile']"
+        Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLTotal' value='$($testResults.CodeCoverage.NumberOfCommandsAnalyzed)']"
+        Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='$($testResults.CodeCoverage.NumberOfCommandsExecuted)']"
     }
 
     # Failed tests?
