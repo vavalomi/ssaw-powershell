@@ -5,7 +5,8 @@ function Resolve-Module {
     param
     (
         [Parameter(Mandatory)]
-        [string[]]$Name
+        [string[]]$Name,
+        [Switch]$SkipPublisherCheck
     )
 
     Process {
@@ -23,7 +24,7 @@ function Resolve-Module {
                     
                     Write-Verbose -Message "$($ModuleName) Installed Version [$($Version.tostring())] is outdated. Installing Gallery Version [$($GalleryVersion.tostring())]"
                     
-                    Install-Module -Name $ModuleName -Force
+                    Install-Module -Name $ModuleName -Force -Scope "CurrentUser" -SkipPublisherCheck:$SkipPublisherCheck
                     Import-Module -Name $ModuleName -Force -RequiredVersion $GalleryVersion
                 }
                 else {
@@ -43,7 +44,8 @@ function Resolve-Module {
 # Grab nuget bits, install modules, set build variables, start build.
 Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
 
-Resolve-Module Psake, PSDeploy, Pester, BuildHelpers
+Resolve-Module Psake, PSDeploy, BuildHelpers
+Resolve-Module Pester -SkipPublisherCheck
 
 Set-BuildEnvironment -Force
 
