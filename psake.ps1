@@ -34,6 +34,9 @@ Task Test -Depends Init {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
+    Invoke-ScriptAnalyzer -Path $ENV:BHPSModulePath -Settings PSGallery -Recurse
+    $lines
+
     $sourcefiles = (Get-ChildItem -Path $ENV:BHPSModulePath\*.ps1  -Recurse).FullName
     $TestResults = Invoke-Pester -Path $ProjectRoot\Tests -PassThru -OutputFormat NUnitXml -CodeCoverage $sourcefiles -OutputFile "$ProjectRoot\$TestFile"
 
@@ -43,8 +46,6 @@ Task Test -Depends Init {
         Write-Output "##teamcity[buildStatisticValue key='CodeCoverageAbsLCovered' value='$($testResults.CodeCoverage.NumberOfCommandsExecuted)']"
     }
 
-    # Failed tests?
-    # Need to tell psake or it will proceed to the deployment. Danger!
     if ($TestResults.FailedCount -gt 0) {
         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
     }
