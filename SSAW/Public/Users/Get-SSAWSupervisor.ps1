@@ -1,15 +1,15 @@
-function Get-SSAWQuestionnaires {
+function Get-SSAWSupervisor {
     [cmdletbinding()]
     param(
         [String]$baseUrl,
         [PSCredential]$Cred
     )
 
-    $resource = "questionnaires"
+    $resource = "supervisors"
 
     $response = Invoke-SSAWRequest -Method GET -Resource $resource -Cred $Cred -baseUrl $baseUrl
 
-    if ($response.Questionnaires) {
-        return $response.Questionnaires
+    if($response.Users){
+        return $response.Users
     }
 }

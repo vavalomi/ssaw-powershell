@@ -1,4 +1,4 @@
-function Get-SSAWInterviewers {
+function Get-SSAWInterviewer {
     [cmdletbinding()]
     param(
         [parameter(Mandatory = $true)]
