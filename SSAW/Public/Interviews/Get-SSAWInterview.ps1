@@ -1,9 +1,7 @@
 function Get-SSAWInterview {
     [cmdletbinding()]
     param(
-        [parameter(Mandatory = $true)]
         [String]$questionnaireId,
-        [parameter(Mandatory = $true)]
         [Int]$questionnaireVersion,
         [String]$status,
         [String]$baseUrl,
@@ -11,7 +9,19 @@ function Get-SSAWInterview {
     )
 
     $resource = "interviews"
-
+    $q = @()
+    if ($questionnaireId) {
+        $q += "questionnaireId=$questionnaireId"
+    }
+    if ($questionnaireVersion) {
+        $q += "questionnaireVersion=$questionnaireVersion"
+    }
+    if ($status) {
+        $q += "status=$status"
+    }
+    if ($q.count) {
+        $resource = $resource + "?" + ($q -join "&")
+    }
     $response = Invoke-SSAWRequest -Method GET -Resource $resource -Cred $Cred -baseUrl $baseUrl
 
     if ($response.Interviews) {
