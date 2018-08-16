@@ -1,5 +1,4 @@
 function Set-SSAWContext() {
-    [cmdletbinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     param(
         [Parameter(
             Mandatory = $true
@@ -14,8 +13,6 @@ function Set-SSAWContext() {
         [Switch]$Force
     )
 
-    if ($Force -or $PSCmdlet.ShouldContinue("The settings will be saved and used by following commandlets", "Are you sure?")) {
-        $Script:scriptbaseUrl = $Url + "/api/v1/"
-        $Script:scriptCred = $Credential
-    }
+    $Script:scriptbaseUrl = $Url + "/api/v1/"
+    $Script:scriptCred = $Credential
 }

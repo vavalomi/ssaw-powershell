@@ -17,7 +17,7 @@ function Assign-SSAWSupervisor {
     $resource = "interviews/" + ($id -replace "-", "") + "/" + $action
 
     if ($Force -or $PSCmdlet.ShouldProcess("Assignment responsible will be changed", "Are you sure?", "Confirm responsible change")) {
-        $response = Invoke-SSAWRequest -Method PATCH -Resource $resource -Cred $Cred -baseUrl $BaseUrl -Payload $Payload
+        $response = Invoke-SSAWRequest -Method PATCH -Resource $resource -Cred $Cred -baseUrl $BaseUrl -Payload $Payload -Force:$Force -Confirm:$False
     }
 
     return $response

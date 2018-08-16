@@ -11,6 +11,6 @@ function Undo-SSAWHQApprove {
     $action = "hqunapprove"
 
     if ($Force -or $PSCmdlet.ShouldProcess("The interview will be unapproved", "Are you sure?", "Confirm status change")) {
-        Set-InterviewStatus -Action $action -id $id -Comment $comment -BaseUrl $baseUrl -Cred $cred
+        Set-InterviewStatus -Action $action -id $id -Comment $comment -BaseUrl $baseUrl -Cred $cred -Force:$Force -Confirm:$False
     }
 }

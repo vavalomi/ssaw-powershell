@@ -19,7 +19,7 @@ function Set-SSAWQuestionComment {
     $resource = "interviews/" + ($id -replace "-", "") + "/comment-by-variable/" + $variable
 
     if ($Force -or $PSCmdlet.ShouldProcess("New comment will be added", "Are you sure?", "Confirm the change")) {
-        $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl -Payload $Payload
+        $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl -Payload $Payload -Force:$Force -Confirm:$False
         return $response
     }
 }

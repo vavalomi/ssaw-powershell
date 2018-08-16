@@ -18,7 +18,7 @@ function Start-SSAWExport {
     $resource = "export/" + $exportType + "/" + $qid + "/start"
 
     if ($Force -or $PSCmdlet.ShouldContinue("New export process will be triggered", "Are you sure?")) {
-        $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl
+        $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl -Force:$Force -Confirm:$False
     }
 
     return $response
