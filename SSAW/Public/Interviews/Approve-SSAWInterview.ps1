@@ -1,5 +1,5 @@
 function Approve-SSAWInterview {
-    [CmdletBinding(SupportsShouldProcess)]
+    [cmdletbinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param(
         [Parameter(Mandatory = $true)]
         [String]$id,
@@ -7,7 +7,8 @@ function Approve-SSAWInterview {
         [String]$baseUrl,
         [PSCredential]$Cred,
         [Alias("ASHQ")]
-        [Switch]$ASHeadquarters
+        [Switch]$ASHeadquarters,
+        [Switch]$Force
     )
 
     if ($ASHeadquarters) {
@@ -16,5 +17,7 @@ function Approve-SSAWInterview {
     else {
         $action = "approve"
     }
-    Set-InterviewStatus -Action $action -id $id -Comment $comment -BaseUrl $baseUrl -Cred $cred
+    if ($Force -or $PSCmdlet.ShouldProcess("The interview will be approved", "Are you sure?", "Confirm status change")) {
+        Set-InterviewStatus -Action $action -id $id -Comment $comment -BaseUrl $baseUrl -Cred $cred
+    }
 }

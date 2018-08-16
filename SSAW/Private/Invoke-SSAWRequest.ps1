@@ -1,12 +1,13 @@
 function Invoke-SSAWRequest {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param(
         [parameter(Mandatory = $true)]
         [String]$Resource,
         [String]$baseUrl,
         [PSCredential]$Cred,
         [String]$Method = "GET",
-        [PSCustomObject]$Payload
+        [PSCustomObject]$Payload,
+        [Switch]$Force
     )
 
     if (-not $baseUrl) {
@@ -25,5 +26,7 @@ function Invoke-SSAWRequest {
     }
 
     $uri = $baseUrl + $Resource + $query
-    Invoke-RestMethod -Method $Method -Uri $uri -Headers $headers -Credential $Cred
+    if ($Force -or $PSCmdlet.ShouldProcess("Interview status will be changed to $resultstatus", "Are you sure?", "Confirm status change")) {
+        Invoke-RestMethod -Method $Method -Uri $uri -Headers $headers -Credential $Cred
+    }
 }

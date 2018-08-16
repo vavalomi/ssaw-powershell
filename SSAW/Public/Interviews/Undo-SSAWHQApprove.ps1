@@ -1,13 +1,16 @@
 function Undo-SSAWHQApprove {
-    [CmdletBinding(SupportsShouldProcess)]
+    [cmdletbinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param(
         [Parameter(Mandatory = $true)]
         [String]$id,
         [String]$comment,
         [String]$baseUrl,
-        [PSCredential]$Cred
+        [PSCredential]$Cred,
+        [Switch]$Force
     )
     $action = "hqunapprove"
 
-    Set-InterviewStatus -Action $action -id $id -Comment $comment -BaseUrl $baseUrl -Cred $cred
+    if ($Force -or $PSCmdlet.ShouldProcess("The interview will be unapproved", "Are you sure?", "Confirm status change")) {
+        Set-InterviewStatus -Action $action -id $id -Comment $comment -BaseUrl $baseUrl -Cred $cred
+    }
 }

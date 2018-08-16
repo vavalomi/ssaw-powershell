@@ -1,5 +1,5 @@
 function Set-SSAWQuestionComment {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param(
         [parameter(Mandatory = $true)]
         [String]$id,
@@ -9,7 +9,8 @@ function Set-SSAWQuestionComment {
         [String]$Comment,
         [Array]$rosterVector,
         [String]$baseUrl,
-        [PSCredential]$Cred
+        [PSCredential]$Cred,
+        [Switch]$Force
     )
 
     $Payload = @{
@@ -17,7 +18,8 @@ function Set-SSAWQuestionComment {
     }
     $resource = "interviews/" + ($id -replace "-", "") + "/comment-by-variable/" + $variable
 
-    $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl -Payload $Payload
-
-    return $response
+    if ($Force -or $PSCmdlet.ShouldProcess("New comment will be added", "Are you sure?", "Confirm the change")) {
+        $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl -Payload $Payload
+        return $response
+    }
 }

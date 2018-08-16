@@ -1,5 +1,5 @@
 function Start-SSAWExport {
-    [cmdletbinding()]
+    [cmdletbinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param(
         [parameter(Mandatory = $true)]
         [String]$questionnaireId,
@@ -10,13 +10,16 @@ function Start-SSAWExport {
         [Datetime]$from,
         [Datetime]$to,
         [String]$baseUrl,
-        [PSCredential]$Cred
+        [PSCredential]$Cred,
+        [Switch]$Force
     )
 
     $qid = ($questionnaireId -replace "-", "") + "$" + $questionnaireVersion
     $resource = "export/" + $exportType + "/" + $qid + "/start"
 
-     $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl
+    if ($Force -or $PSCmdlet.ShouldContinue("New export process will be triggered", "Are you sure?")) {
+        $response = Invoke-SSAWRequest -Method POST -Resource $resource -Cred $Cred -baseUrl $baseUrl
+    }
 
     return $response
 }
