@@ -25,6 +25,5 @@ function Invoke-SSAWRequest {
     }
 
     $uri = $baseUrl + $Resource + $query
-    write-host $uri
-    #Invoke-RestMethod -Method $Method -Uri $uri -Headers $headers -Credential $Cred
+    Invoke-RestMethod -Method $Method -Uri $uri -Headers $headers -Credential $Cred
 }
