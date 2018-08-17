@@ -4,6 +4,7 @@ function Format-Payload {
         [parameter(Mandatory = $true)]
         [PSCustomObject]$Payload
     )
+    Add-Type -AssemblyName System.Web
     $keys = @()
     $Payload.GetEnumerator() | ForEach-Object {
         $keys += (
