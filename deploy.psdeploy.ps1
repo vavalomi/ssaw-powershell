@@ -9,7 +9,7 @@ if (
     Deploy Module {
         By PSGalleryModule {
             FromSource $ENV:BHModulePath
-            To PSGallery
+            To PSGalleryPreview
             WithOptions @{
                 ApiKey = $ENV:NugetApiKey
             }
@@ -21,5 +21,5 @@ else {
     "`t* You are in a known build system (Current: $ENV:BHBuildSystem)`n" +
     "`t* You are committing to the master branch (Current: $ENV:BHBranchName) `n" +
     "`t* Your commit message includes !deploy (Current: $ENV:BHCommitMessage)" |
-    Write-Host
+        Write-Host
 }
